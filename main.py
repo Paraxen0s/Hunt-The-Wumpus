@@ -1,5 +1,6 @@
 from audioop import add
 from re import I
+import re
 from cave import *
 from settings import *
 from entities import *
@@ -29,7 +30,7 @@ def lose_game():
 
 
 def setup_game():
-    print('setting up game...')
+    #print('setting up game...')
 
     global cave
     cave = Cave('dodecahedron')
@@ -48,6 +49,7 @@ def setup_game():
     for _ in range(0, PIT_COUNT):
         pits_list.append(Pit(cave))
 
+    print_status()
 
 def general_commands(command: str):
     match command:
@@ -57,10 +59,8 @@ def general_commands(command: str):
             print_help()
         case 'status':
             print_status()
-        case 'reset':
-            setup_game()
-        case 'debug':
-            print_debug()
+        # case 'debug':
+        #     print_debug()
         case _:
             print("Invalid command, try typing 'help'")
 
@@ -70,9 +70,8 @@ def print_help():
     print("'quit' quits the game, without confirmation")
     print("'help' brings up the list of commands (this thing)")
     print("'move [x]' to move the player to room [x], if [x] is adjacent")
-    print("'shoot [x] [y] [...]' to shoot an arrow into room [x] if adjacent, then [y] if adjacent to [x], etc")
+    print("'shoot [x] [y] [...]' to shoot an arrow into room [x] if its adjacent, then [y] if its adjacent to [x], etc")
     print("'status' to show your current location, and info about it")
-    print("'reset' resets the game using any updated settings")
     print("----------------------------------------------------------------")
 
 
@@ -129,9 +128,6 @@ def game_tick(took_shot: bool):
 
 if __name__ == '__main__':
     setup_game()
-
-    print_debug()
-    print_status()
 
     while running:
         input_string = input('> ')
